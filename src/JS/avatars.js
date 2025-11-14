@@ -1,9 +1,13 @@
+// avatars.js
+
 // класс для работы с аватарами пользователей
 export class AvatarManager {
   constructor() {
     this.avatars = new Map();
     this.currentStyle = "default";
-    this.avatarsPath = "images/avatars/";
+
+    this.avatarsPath = "/images/avatars/";
+
     this.defaultAvatar = "default/default-avatar.png";
     this.defaultGroupAvatar = "default/default-group.png";
   }
@@ -58,13 +62,17 @@ export class AvatarManager {
       `[data-user-id="${userId}"] .avatar img`
     );
     avatarElements.forEach((img) => {
-      // добавляем обработчик ошибок загрузки изображения
       img.onerror = () => {
-        console.warn("Error in _setAvatrsSrc");
-        const path = this.getAvatarPath(userId, isGroup);
-        img.src = this._setAvatarsSrc(path, userId);
-        this.avatars.set(userId, path);
+        console.warn(
+          `Не удалось загрузить аватар: ${avatarPath}. Устанавливаю дефолтный.`
+        );
+        const defaultPath =
+          this.avatarsPath +
+          (isGroup ? this.defaultGroupAvatar : this.defaultAvatar);
+        img.src = defaultPath;
+        img.onerror = null;
       };
+
       img.src = avatarPath;
     });
   }

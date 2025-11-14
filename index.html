@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Чатик</title>
-    <link rel="stylesheet" href="CSS/main.css" />
-    <script type="module" src="JS/api.js"></script>
+    <link rel="stylesheet" href="/src/CSS/main.css" />
+    <script type="module" src="/src/JS/api.js"></script>
   </head>
   <body>
     <div class="loading-screen">
@@ -14,7 +14,6 @@
     </div>
 
     <div class="chat-container">
-      <!-- Боковая панель-->
       <div class="sidebar">
         <div class="sidebar-header">
           <label for="chat-search" class="visually-hidden">Поиск чатов</label>
@@ -45,7 +44,6 @@
         </div>
       </div>
 
-      <!-- Тестовая страница -->
       <div class="main-chat">
         <div class="chat-header">
           <div class="avatar">
@@ -75,7 +73,6 @@
         </div>
       </div>
 
-      <!-- Разметка настроек -->
       <div class="settings-panel" id="settingsPanel">
         <div class="settings-header">
           <h2>Настройки</h2>
@@ -243,7 +240,6 @@
         </div>
       </div>
 
-      <!-- Панель информации о чате -->
       <div id="panel" class="panel">
         <div id="panel-header" class="panel-header">
           <h2>Информации о чате</h2>
@@ -253,7 +249,6 @@
         <div id="panel-content" class="panel-content"></div>
       </div>
 
-      <!-- Окно поиска онлайн пользователей -->
       <div class="modal-window">
         <div class="modal-container">
           <div class="modal-content">
@@ -315,8 +310,7 @@
       </div>
     </div>
 
-    <!-- Сначала загружаем script.js, затем main.js -->
-    <script type="module" src="JS/script.js"></script>
-    <script type="module" src="JS/main.js"></script>
+    <script type="module" src="/src/JS/script.js"></script>
+    <script type="module" src="/src/JS/main.js"></script>
   </body>
 </html>
