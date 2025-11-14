@@ -1,21 +1,21 @@
-const express   = require("express");
-const session   = require('express-session');
-const http      = require('http');
+const express = require("express");
+const session = require("express-session");
+const http = require("http");
 const WebSocket = require("ws");
-const db        = require("./db/ramDb");
-const routes    = require("./route/routes");
-const User      = require("./model/user");
+const db = require("./db/ramDb");
+const routes = require("./route/routes");
+const User = require("./model/user");
 const wsService = require("./service/wsService");
-const path      = require('path');
-const crypto    = require('crypto');
+const path = require("path");
+const crypto = require("crypto");
 
 const SERVER_INSTANCE_TOKEN = crypto.randomUUID();
 const PORT = process.env.PORT || 3000;
 
 const sessionMiddleware = session({
-    secret: "its not a secret =(",
-    resave: false,
-    saveUninitialized: true
+  secret: "its not a secret =(",
+  resave: false,
+  saveUninitialized: true,
 });
 
 const app = express();
@@ -27,54 +27,39 @@ db.loadTestData();
 app.use(sessionMiddleware);
 app.use(express.json());
 
-// Настройка MIME-типов
-app.use((req, res, next) => {
-    if (req.path.endsWith('.css')) {
-        res.type('text/css');
-    } else if (req.path.endsWith('.js')) {
-        res.type('application/javascript');
-    }
-    next();
-});
+app.use(express.static(path.join(__dirname, "dist")));
 
-// Сначала обрабатываем статические файлы
-app.use(express.static(path.join(__dirname, "public"), {
-    setHeaders: (res, path) => {
-        if (path.endsWith('.css')) {
-            res.setHeader('Content-Type', 'text/css');
-        } else if (path.endsWith('.js')) {
-            res.setHeader('Content-Type', 'application/javascript');
-        }
-    }
-}));
-
-// Затем API маршруты
 app.use("/api/v1", routes);
 
-app.get('/api/v1/server-token', (req, res) => {
-    res.json({ serverInstanceToken: SERVER_INSTANCE_TOKEN });
+app.get("/api/v1/server-token", (req, res) => {
+  res.json({ serverInstanceToken: SERVER_INSTANCE_TOKEN });
 });
 
-wsServer.on("connection", ws => {
-
-    ws.send(JSON.stringify({
-        type: 'server_instance_token',
-        token: SERVER_INSTANCE_TOKEN
-    }));
-
-    const user = new User(null, null);
-
-    ws.on("message", (message) => {
-        wsService.onMessage(ws, user, message);
-    });
-
-    ws.on("close", () => {
-        wsService.onClose(ws, user);
-    });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
+// Обработка WebSocket
+wsServer.on("connection", (ws) => {
+  ws.send(
+    JSON.stringify({
+      type: "server_instance_token",
+      token: SERVER_INSTANCE_TOKEN,
+    })
+  );
 
+  const user = new User(null, null);
 
+  ws.on("message", (message) => {
+    wsService.onMessage(ws, user, message);
+  });
+
+  ws.on("close", () => {
+    wsService.onClose(ws, user);
+  });
+});
+
+// Запуск сервера
 httpServer.listen(PORT, () => {
-    console.log(`Server listening port ${PORT}`);
+  console.log(`Server listening port ${PORT}`);
 });

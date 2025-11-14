@@ -1,11 +1,8 @@
-export class MobileHandler
-{
-    constructor()
-    {
-        /* стили */
-        this.savedCloseStyle = document.createElement('style');
-        this.savedCloseStyle.textContent = 
-        `
+export class MobileHandler {
+  constructor() {
+    /* стили */
+    this.savedCloseStyle = document.createElement("style");
+    this.savedCloseStyle.textContent = `
             @media(max-width: 1000px)
             {
                 .chat-container 
@@ -15,8 +12,8 @@ export class MobileHandler
             }
         `;
 
-        this.savedOpenStyle = document.createElement('style');
-        this.savedOpenStyle.textContent = `
+    this.savedOpenStyle = document.createElement("style");
+    this.savedOpenStyle.textContent = `
             @media(max-width: 1000px)
             {
                 .chat-container 
@@ -26,29 +23,25 @@ export class MobileHandler
             }
         `;
 
-        /* элементы DOM страницы */
-        this.returnButton = document.getElementById("Button_back");
-        this.setupEventListeners();
-    }
+    /* элементы DOM страницы */
+    this.returnButton = document.getElementById("Button_back");
+    this.setupEventListeners();
+  }
 
-    setupEventListeners()
-    {
-        this.returnButton.addEventListener('click', () => 
-        {
-            this.close();
-        });
-    }
+  setupEventListeners() {
+    this.returnButton.addEventListener("click", () => {
+      this.close();
+    });
+  }
 
-    close()
-    {
-        document.head.appendChild(this.savedCloseStyle);
-        window.chatManager.disableActiveChat();
-    }
+  close() {
+    document.head.appendChild(this.savedCloseStyle);
+    window.chatManager.disableActiveChat();
+  }
 
-    open()
-    {
-        document.head.appendChild(this.savedOpenStyle);
-    }
+  open() {
+    document.head.appendChild(this.savedOpenStyle);
+  }
 }
 
 export const mobileHandler = new MobileHandler();

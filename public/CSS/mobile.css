@@ -1,4 +1,3 @@
-
 .back_chat_button {
   background: none;
   width: fit-content;
@@ -18,36 +17,29 @@
   background-color: rgba(0, 0, 0, 0.653);
 }
 
-
-@media(max-width: 1000px)
-{
-  .chat-container 
-  {
+@media (max-width: 1000px) {
+  .chat-container {
     grid-template-columns: 1fr 0px;
   }
 
-  .modal-container 
-  {
+  .modal-container {
     width: 85%;
     max-height: 200vh;
   }
 
-  .settings-panel 
-  {
+  .settings-panel {
     transition: right 0.5s ease;
     width: 100%;
     right: -1000px;
   }
 
-  #panel 
-  {
+  #panel {
     transition: right 0.5s ease;
     width: 100%;
     right: -1000px;
   }
-  
+
   .main-chat .chat-header {
     grid-template-columns: auto 5fr auto auto;
   }
-
 }

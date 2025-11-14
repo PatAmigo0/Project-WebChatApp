@@ -30,7 +30,6 @@
   transform: translateX(-300px);
 }
 
-
 /* заголовок настроек */
 .settings-header {
   display: grid;
@@ -151,7 +150,7 @@
   transition: background-color 0.2s;
 }
 
-#leave, #clearCookies
-{
+#leave,
+#clearCookies {
   background-color: rgba(234, 35, 13, 1);
 }

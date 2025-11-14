@@ -14,7 +14,11 @@
   /* Переменные для абстрактной темы */
   --abstract-primary: #3023ae;
   --abstract-secondary: #c86dd7;
-  --abstract-gradient: linear-gradient(135deg, var(--abstract-primary), var(--abstract-secondary));
+  --abstract-gradient: linear-gradient(
+    135deg,
+    var(--abstract-primary),
+    var(--abstract-secondary)
+  );
 
   /* Общее время перехода для всех свойств */
   --transition-time: 0.3s;

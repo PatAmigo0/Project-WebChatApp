@@ -4,7 +4,10 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "dev": "vite",
+    "start": "node app.js",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "author": "Kuskov A.A.",
   "license": "UNLICENSED",
@@ -12,6 +15,7 @@
   "dependencies": {
     "express": "^4.21.2",
     "express-session": "^1.18.1",
+    "vite": "^7.2.2",
     "ws": "^8.18.1"
   }
 }

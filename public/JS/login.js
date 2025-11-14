@@ -1,146 +1,122 @@
-export class LoginHandler
-{
-    constructor()
-    {
-        this.mainWindow = document.querySelector(".modal-login");
-        this.loginButton = document.getElementById("loginButton");
-        this.loginInput = document.getElementById("login-input");
+export class LoginHandler {
+  constructor() {
+    this.mainWindow = document.querySelector(".modal-login");
+    this.loginButton = document.getElementById("loginButton");
+    this.loginInput = document.getElementById("login-input");
 
-        this.randomPlaceholders = 
-        [
-            "ProGamer123",
-            "Даник",
-            ":(",
-            ":)",
-            "=)",
-            "утка",
-            "admin",
-            "jslearner",
-            "ga...",
-            "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
-            "lelelelelelelelelelelelelellelelelelelelelelelellelelelelelelelellelelelelelellelelelelelelelelelelelleleelllelelelelelelelelelelellelelelelelelelelelelelelelelellelelelelelelelelelelellelelelelelelellelelelelelelelelelelleleelllelelelelele Ты не должен тут быть..."
-        ];
+    this.randomPlaceholders = [
+      "ProGamer123",
+      "Даник",
+      ":(",
+      ":)",
+      "=)",
+      "утка",
+      "admin",
+      "jslearner",
+      "ga...",
+      "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+      "lelelelelelelelelelelelelellelelelelelelelelelellelelelelelelelellelelelelelellelelelelelelelelelelelleleelllelelelelelelelelelelellelelelelelelelelelelelelelelellelelelelelelelelelelellelelelelelelellelelelelelelelelelelleleelllelelelelele Ты не должен тут быть...",
+    ];
 
-        this.style = "gradient-pattern-rainbow"
-        this.init();
+    this.style = "gradient-pattern-rainbow";
+    this.init();
+  }
+
+  init() {
+    this.randomizePlaceholder();
+    this.setupEventListeners();
+  }
+
+  // для случайных надписей на панели ввода
+  randomizePlaceholder() {
+    this.loginInput.placeholder =
+      this.randomPlaceholders[
+        Math.floor(Math.random() * this.randomPlaceholders.length)
+      ];
+  }
+
+  // для управления видом
+  setupEventListeners() {
+    this.loginButton.addEventListener("mouseenter", () => {
+      this.loginButton.classList.add(this.style);
+    });
+
+    this.loginButton.addEventListener("mouseleave", () => {
+      this.loginButton.classList.remove(this.style);
+    });
+
+    this.loginInput.addEventListener("input", () => {
+      if (this.loginInput.value == "") this.randomizePlaceholder();
+      this.loginInput.classList.remove("error");
+    });
+  }
+
+  // обрабатываем поле ввода
+  handleInput() {
+    this.username = this.loginInput.value;
+    this.loginInput.value = "";
+
+    console.warn(this.username.slice(0, 15));
+
+    if (this.username) {
+      return this.username.slice(0, 15);
+    } else {
+      this.loginError("Поле не должно быть пустым.");
     }
+  }
 
-    init()
-    {
-        this.randomizePlaceholder();
-        this.setupEventListeners();
-    }
+  // удаляем окно логина так как оно нам больше не нужно
+  hideLoginWindow() {
+    this.mainWindow.remove();
+  }
 
-    // для случайных надписей на панели ввода
-    randomizePlaceholder()
-    {
-        this.loginInput.placeholder = this.randomPlaceholders[Math.floor(Math.random() * this.randomPlaceholders.length)];
-    }
-    
-    // для управления видом
-    setupEventListeners()
-    {
-        this.loginButton.addEventListener("mouseenter", () => 
-        {
-            this.loginButton.classList.add(this.style);
-        });
+  /**
+   * @param {string} errorText - текст ошибки
+   */
+  loginError(errorText) {
+    this.loginInput.classList.add("error");
+    this.loginInput.placeholder = errorText;
+  }
 
-        this.loginButton.addEventListener("mouseleave", () =>
-        {
-            this.loginButton.classList.remove(this.style);
-        });
+  async handleLogin(checkCookies = false) {
+    return new Promise((res) => {
+      const lastLogin = localStorage.getItem("lastLogin");
+      if (checkCookies && lastLogin) {
+        res(lastLogin);
+        return;
+      } else {
+        localStorage.removeItem("lastLogin");
+        this.mainWindow.classList.add("active"); // включаем окно логина если не нашли запись о входе
+      }
 
-        this.loginInput.addEventListener("input", () => 
-        {
-            if (this.loginInput.value == "")
-                this.randomizePlaceholder();
-            this.loginInput.classList.remove("error");
-        });
-    }
-
-    // обрабатываем поле ввода
-    handleInput()
-    {
-        this.username = this.loginInput.value;
-        this.loginInput.value = "";
-
-        console.warn(this.username.slice(0, 15));
-
-
-        if (this.username)
-        {
-            return this.username.slice(0, 15);
+      // создаем функции-обработчики которые сможем удалить
+      const buttonClickHandler = () => {
+        const val = this.handleInput();
+        if (val) {
+          // отписываемся от событий перед разрешением Promise
+          this.loginButton.removeEventListener("click", buttonClickHandler);
+          this.loginInput.removeEventListener("keypress", keyPressHandler);
+          res(val);
         }
-        else
-        {
-            this.loginError("Поле не должно быть пустым.");
+      };
+
+      const keyPressHandler = (e) => {
+        if (e.key == "Enter") {
+          const val = this.handleInput();
+          if (val) {
+            // отписываемся от событий перед разрешением Promise
+            this.loginButton.removeEventListener("click", buttonClickHandler);
+            this.loginInput.removeEventListener("keypress", keyPressHandler);
+            res(val);
+          }
         }
-    }
+      };
 
-    // удаляем окно логина так как оно нам больше не нужно
-    hideLoginWindow()
-    {
-        this.mainWindow.remove();
-    }
-
-    /**
-     * @param {string} errorText - текст ошибки
-     */ 
-    loginError(errorText)
-    {
-        this.loginInput.classList.add("error");
-        this.loginInput.placeholder = errorText;
-    }
-
-    async handleLogin(checkCookies = false)
-    {
-        return new Promise((res) => 
-        {
-            const lastLogin = localStorage.getItem("lastLogin");
-            if (checkCookies && lastLogin)
-            {
-                res(lastLogin);
-                return;
-            }
-            else
-            {
-                localStorage.removeItem("lastLogin");
-                this.mainWindow.classList.add('active'); // включаем окно логина если не нашли запись о входе
-            }
-
-            // создаем функции-обработчики которые сможем удалить
-            const buttonClickHandler = () => 
-            {
-                const val = this.handleInput();
-                if (val)
-                {
-                    // отписываемся от событий перед разрешением Promise
-                    this.loginButton.removeEventListener("click", buttonClickHandler);
-                    this.loginInput.removeEventListener("keypress", keyPressHandler);
-                    res(val);
-                }
-            };
-
-            const keyPressHandler = (e) => 
-            {
-                if (e.key == "Enter")
-                {
-                    const val = this.handleInput();
-                    if (val)
-                    {
-                        // отписываемся от событий перед разрешением Promise
-                        this.loginButton.removeEventListener("click", buttonClickHandler);
-                        this.loginInput.removeEventListener("keypress", keyPressHandler);
-                        res(val);
-                    }
-                }
-            };
-
-            // добавляем обработчики
-            this.loginButton.addEventListener("click", buttonClickHandler);
-            this.loginInput.addEventListener("keypress", keyPressHandler);
-        });
-    }
+      // добавляем обработчики
+      this.loginButton.addEventListener("click", buttonClickHandler);
+      this.loginInput.addEventListener("keypress", keyPressHandler);
+    });
+  }
 }
 
 export const loginHandler = new LoginHandler();

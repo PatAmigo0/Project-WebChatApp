@@ -1,7 +1,6 @@
 /* окно загрузки */
 
-.loading-screen
-{
+.loading-screen {
   background-color: rgb(0, 0, 0);
   display: none;
   align-items: center;
@@ -16,23 +15,19 @@
   transition: opacity 0.5s ease-in;
 }
 
-.loading-screen pre
-{
-  color: white !important; 
+.loading-screen pre {
+  color: white !important;
 }
 
-.loading-screen.active 
-{
+.loading-screen.active {
   display: flex;
 }
 
-.loading-screen.fade 
-{
+.loading-screen.fade {
   opacity: 0;
 }
 
-.spinner 
-{
+.spinner {
   border: 6px solid white;
   border-color: white transparent white transparent;
   border-radius: 50%;
@@ -96,7 +91,7 @@
 .modal-content * {
   border-radius: 6px;
   background-color: rgb(
-      from var(--bg-primary) calc(r + 10) calc(g + 10) calc(b + 10)
+    from var(--bg-primary) calc(r + 10) calc(g + 10) calc(b + 10)
   );
 }
 
@@ -179,8 +174,7 @@
   opacity: 0;
   pointer-events: none;
   transform: translateY(20px);
-  transition: 
-    opacity var(--transition-time) ease,
+  transition: opacity var(--transition-time) ease,
     transform var(--transition-time) ease,
     background-color var(--transition-time) ease;
   will-change: opacity, transform, background-color;
@@ -220,8 +214,7 @@
   font-size: large;
 }
 
-.name.baser 
-{
+.name.baser {
   color: red;
   font-size: large;
 }
@@ -302,8 +295,7 @@
 
 /* окно с ошибкой */
 
-.error-window
-{
+.error-window {
   overflow: hidden;
   color: black;
   display: none;
@@ -315,17 +307,20 @@
 
   width: 100%;
   height: 100%;
-  background-color: rgba(rgb(62, 27, 27), rgb(12, 161, 12), rgb(55, 55, 193), 0.3); /* затененный фон*/
+  background-color: rgba(
+    rgb(62, 27, 27),
+    rgb(12, 161, 12),
+    rgb(55, 55, 193),
+    0.3
+  ); /* затененный фон*/
   z-index: 999;
 }
 
-.error-window.active
-{
+.error-window.active {
   display: grid;
 }
 
-.error-window-content
-{
+.error-window-content {
   display: grid;
   overflow: visible;
   position: absolute;
@@ -348,16 +343,13 @@
   z-index: 10000;
 }
 
-
-.error-window span
-{
+.error-window span {
   display: flex;
   position: absolute;
   bottom: 50px;
   right: 9px;
 }
 
-.error-window span:hover
-{
+.error-window span:hover {
   cursor: pointer;
 }

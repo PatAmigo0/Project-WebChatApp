@@ -75,39 +75,33 @@
 }
 
 /* стили сообщений */
-.message-container
-{
+.message-container {
   display: grid;
   gap: 4px;
   grid-template-columns: auto 1fr;
 }
 
-.message-name
-{
+.message-name {
   font-family: monospace, sans-serif;
   display: flex;
 }
 
-.avatar-info
-{
+.avatar-info {
   display: flex;
 }
 
-.messages-history
-{
+.messages-history {
   display: grid;
   gap: 3px;
   grid-template-rows: auto 1fr;
 }
 
-.message-name.admin
-{
+.message-name.admin {
   color: peru;
   font-size: large;
 }
 
-.message-name.baser
-{
+.message-name.baser {
   color: red;
   font-size: large;
 }
@@ -128,8 +122,7 @@
   will-change: background-color;
 }
 
-.message a
-{
+.message a {
   outline: none;
   color: var(--text-primary);
 }
@@ -139,8 +132,7 @@
   justify-self: start;
 }
 
-.messege-received_name
-{
+.messege-received_name {
   color: black;
 }
 
@@ -187,8 +179,7 @@
   will-change: height, background-color, color, border-color;
 }
 
-.message-input.input-error
-{
+.message-input.input-error {
   border-color: red;
 }
 
