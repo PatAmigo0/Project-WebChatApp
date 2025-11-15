@@ -1,5 +1,7 @@
 # 'mini-telegram'
 
+## [Ссылка на чат](https://chat-app-f8o7.onrender.com/)
+
 A simple real-time chat application built with Node.js, Express, and WebSockets, inspired by Telegram.
 
 ## 🚀 Features
