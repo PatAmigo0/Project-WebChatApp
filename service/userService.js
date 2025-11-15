@@ -1,8 +1,9 @@
-const db = require("../db/ramDb");
-const users = db.getUsers();
-const User = require("../model/user");
+import db from "../db/ramDb.js";
+import User from "../model/user.js";
 
-module.exports = {
+const users = db.getUsers();
+
+const userService = {
   /**
    * Find or create user with given name.
    * Returns user uuid or empty string if user already logined
@@ -49,3 +50,5 @@ module.exports = {
     return Array.from(users.filter((e) => e.id != exceptId && e.online));
   },
 };
+
+export default userService;

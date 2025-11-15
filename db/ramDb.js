@@ -1,62 +1,65 @@
-const crypto = require('crypto');
-const fs = require('fs');
-const path = require('path');
-const User = require('../model/user');
-const { ConversationShort, Message } = require('../model/conversation');
+import crypto from "crypto";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { ConversationShort, Message } from "../model/conversation.js";
+import User from "../model/user.js";
 
-const USERS = [];    // User
-const CONVS = [];    // ConversationShort
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const USERS = []; // User
+const CONVS = []; // ConversationShort
 
 /* поменять базу данных на более эффективную по времени */
 const USERS_MAP = new Map();
 const CONVS_MAP = new Map();
 
 function readJsonFile(filename) {
-    const filePath = path.join(__dirname, filename);
-    const data = fs.readFileSync(filePath, 'utf-8');
-    return JSON.parse(data);
+  const filePath = path.join(__dirname, filename); // Теперь это работает
+  const data = fs.readFileSync(filePath, "utf-8");
+  return JSON.parse(data);
 }
 
-module.exports = {
-    /**
-     * 
-     * @returns {Array<User>}
-     */
-    getUsers: () => {
-        return USERS;
-    },
+const db = {
+  /**
+   * * @returns {Array<User>}
+   */
+  getUsers: () => {
+    return USERS;
+  },
 
-    /**
-     * 
-     * @returns {Array<ConversationShort>}
-     */
-    getConversations: () => {
-        return CONVS;
-    },
+  /**
+   * * @returns {Array<ConversationShort>}
+   */
+  getConversations: () => {
+    return CONVS;
+  },
 
-    /**
-     * 
-     * @returns {String} uuid
-     */
-    generateId: () => {
-        return crypto.randomUUID();
-    },
+  /**
+   * * @returns {String} uuid
+   */
+  generateId: () => {
+    return crypto.randomUUID();
+  },
 
-    loadTestData: () => {
-        const users = readJsonFile("test-users.json");
-        users.forEach(e => {
-            const u = new User(e.id, e.name);
-            u.online = e.online;
-            USERS.push(u);
-        });
+  loadTestData: () => {
+    const users = readJsonFile("test-users.json");
+    users.forEach((e) => {
+      const u = new User(e.id, e.name);
+      u.online = e.online;
+      USERS.push(u);
+    });
 
-        const convs = readJsonFile("test-conv.json");
-        convs.forEach(e => {
-            const ms = [];
-            e.messages.forEach(m => {
-                ms.push(new Message(m.sender, null, m.text))
-            });
-            CONVS.push(new ConversationShort(e.id, e.name, e.users, ms));
-        });
-    }
+    const convs = readJsonFile("test-conv.json");
+    convs.forEach((e) => {
+      const ms = [];
+      e.messages.forEach((m) => {
+        ms.push(new Message(m.sender, null, m.text));
+      });
+      CONVS.push(new ConversationShort(e.id, e.name, e.users, ms));
+    });
+  },
 };
+
+export default db;

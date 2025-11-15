@@ -1,15 +1,15 @@
-const db = require("../db/ramDb");
-const conversations = db.getConversations();
-const userService = require("./userService");
-const {
-  ConversationShort,
-  ConversationMeta,
-  Message,
+import db from "../db/ramDb.js";
+import {
   Conversation,
-  NewMessage,
+  ConversationMeta,
+  ConversationShort,
+  Message,
   NewConversation,
-} = require("../model/conversation");
+  NewMessage,
+} from "../model/conversation.js";
+import userService from "./userService.js";
 
+const conversations = db.getConversations();
 const MAX_CONVERSATIONS_MEM = 30;
 const MAX_MESSAGES_MEM = 50; // вместимость памяти
 
@@ -90,7 +90,7 @@ function findById(id) {
   return conversations.find((e) => e.id == id);
 }
 
-module.exports = {
+const convService = {
   /**
    *
    * @param {String} userId
@@ -149,7 +149,8 @@ module.exports = {
 
   delete: (conversation) => {
     const targetIndex = conversations.indexOf(conversation);
-    if (targetChat) {
+    // Ошибка в оригинальном коде: targetChat не определен. Заменено на targetIndex.
+    if (targetIndex > -1) {
       conversations.splice(targetIndex, 1);
       return true;
     }
@@ -180,8 +181,13 @@ module.exports = {
   sort: (conv) => {
     if (!(conversations[0] == conv)) {
       const index = conversations.indexOf(conv);
-      conversations.unshift(conversations[index]);
-      conversations.splice(index + 1, 1);
+      if (index > -1) {
+        // Добавлена проверка на случай, если index = -1
+        conversations.unshift(conversations[index]);
+        conversations.splice(index + 1, 1);
+      }
     }
   },
 };
+
+export default convService;

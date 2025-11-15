@@ -12,10 +12,15 @@ export default defineConfig({
       compress: {
         drop_console: true,
         drop_debugger: true,
+        ecma: 2020,
+        unsafe: true,
+        passes: 3,
       },
       format: {
         comments: false,
+        ecma: 2020,
       },
+      mangle: {},
     },
   },
 

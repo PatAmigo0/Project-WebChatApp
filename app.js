@@ -1,13 +1,18 @@
-const express = require("express");
-const session = require("express-session");
-const http = require("http");
-const WebSocket = require("ws");
-const db = require("./db/ramDb");
-const routes = require("./route/routes");
-const User = require("./model/user");
-const wsService = require("./service/wsService");
-const path = require("path");
-const crypto = require("crypto");
+import crypto from "crypto";
+import express from "express";
+import session from "express-session";
+import http from "http";
+import path from "path";
+import { fileURLToPath } from "url";
+import { WebSocketServer } from "ws";
+
+import db from "./db/ramDb.js";
+import User from "./model/user.js";
+import routes from "./route/routes.js";
+import wsService from "./service/wsService.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const SERVER_INSTANCE_TOKEN = crypto.randomUUID();
 const PORT = process.env.PORT || 3000;
@@ -20,7 +25,7 @@ const sessionMiddleware = session({
 
 const app = express();
 const httpServer = http.createServer(app);
-const wsServer = new WebSocket.Server({ server: httpServer });
+const wsServer = new WebSocketServer({ server: httpServer });
 
 db.loadTestData();
 
@@ -51,7 +56,9 @@ wsServer.on("connection", (ws) => {
   const user = new User(null, null);
 
   ws.on("message", (message) => {
-    wsService.onMessage(ws, user, message);
+    // wsService.onMessage ожидает строку, а 'message' в ws v8 - это Buffer.
+    // Преобразуем его в строку.
+    wsService.onMessage(ws, user, message.toString());
   });
 
   ws.on("close", () => {

@@ -1,9 +1,9 @@
-const WebSocket = require("ws");
-const WebSocketData = require("../model/webSocketData");
-const userService = require("../service/userService");
-const convService = require("./convService");
-const User = require("../model/user");
-const { ConversationShort, NewMessage } = require("../model/conversation");
+import WebSocket from "ws";
+import { ConversationShort, NewMessage } from "../model/conversation.js";
+import User from "../model/user.js";
+import WebSocketData from "../model/webSocketData.js";
+import userService from "../service/userService.js";
+import convService from "./convService.js";
 
 const CLIENTS = new Map();
 
@@ -103,7 +103,7 @@ function newMessHandler(stream, user, data) {
   }
 }
 
-module.exports = {
+const wsService = {
   onMessage: (stream, user, message) => {
     const wsData = WebSocketData.fromJsonString(message);
 
@@ -139,3 +139,5 @@ module.exports = {
     }
   },
 };
+
+export default wsService;

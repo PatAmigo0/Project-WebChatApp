@@ -1,8 +1,8 @@
-const express = require("express");
-const router = express.Router();
+import express from "express";
+import convController from "../controller/convController.js";
+import userController from "../controller/userController.js";
 
-const userController = require("../controller/userController");
-const convController = require("../controller/convController");
+const router = express.Router();
 
 router.get("/users", userController.getAll);
 router.get("/users/online", userController.getOnline);
@@ -12,4 +12,4 @@ router.get("/conv", convController.getById);
 router.post("/login", userController.login);
 router.post("/conv/create", convController.create);
 
-module.exports = router;
+export default router;
